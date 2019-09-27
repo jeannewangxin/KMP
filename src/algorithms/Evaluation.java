@@ -40,18 +40,4 @@ public class Evaluation {
     return result;
   }
   
-  public int getPopulation(Point p, ArrayList<Point> vertices, int edgeThreshold) {
-	  ArrayList<Point> result = new ArrayList<Point>();
-	  result = neighbor(p,vertices,edgeThreshold);
-	  return result.size();
-  }
-  
-  public boolean isneighbor(Point p,Point p2,ArrayList<Point> vertices, int edgeThreshold){
-	  ArrayList<Point> n = new ArrayList<Point>();
-	  n = neighbor(p,vertices,edgeThreshold);
-	  for(Point point:n) {
-		  if(point == p2) return true;
-	  }
-	  return false;
-  }
 }
