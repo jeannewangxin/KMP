@@ -48,7 +48,6 @@ public class DefaultTeam {
 		    }
 		    
 		    return result;
-		  //  return goulton(points,edgeThreshold);
 	}
 
 	private ArrayList<Point> greedy(ArrayList<Point> pointsIn, int edgeThreshold) {
@@ -108,17 +107,16 @@ public class DefaultTeam {
 		for (int i = 0; i < test.size(); i++) {
 			for (int j = i + 1; j < test.size(); j++) {
 				Point q = test.remove(j);
-				Point p = test.remove(i); //去掉两个点试试看
-
+				Point p = test.remove(i);
+				 //去掉两个点试试看
 				for (Point r : rest) {
-					if(r.distance(q)<= 5*edgeThreshold && r.distance(p)<= 5*edgeThreshold) {
+					if(r.distance(q)<= 2.85*edgeThreshold && r.distance(p)<= 2.85*edgeThreshold) {
 						test.add(r);
 						if (isSolution(test, points, edgeThreshold))
 							return test;
 						test.remove(r);
 					}
 				}
-
 				test.add(i, p);
 				test.add(j, q);
 			}
