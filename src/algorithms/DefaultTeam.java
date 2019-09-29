@@ -39,7 +39,7 @@ public class DefaultTeam {
 
 		  ArrayList<Point> result = (ArrayList<Point>)points.clone();
 
-		    for (int i=0;i<3;i++){
+		    for (int i=0;i<1;i++){
 		      ArrayList<Point> fvs = localSearch(goulton(points,edgeThreshold),points,edgeThreshold);
 
 		      System.out.println("MAIN. Current sol: " + result.size() + ". Found next sol: "+fvs.size());
@@ -88,7 +88,14 @@ public class DefaultTeam {
 		do {
 			current = next;
 			next = remove2add1(current, points, edgeThreshold);
-			System.out.println("LS. Current sol: " + current.size() + ". Found next sol: " + next.size());
+			System.out.println("LS. remove2add1 Current sol: " + current.size() + ". Found next sol: " + next.size());
+		} while (score(current) > score(next));//当current的size > next的size的时候，current = next;
+
+
+		do {
+			current = next;
+			next = remove3add2(current, points, edgeThreshold);
+			System.out.println("LS. remove3add2 Current sol: " + current.size() + ". Found next sol: " + next.size());
 		} while (score(current) > score(next));//当current的size > next的size的时候，current = next;
 
 		System.out.println("LS. Last sol: " + current.size());
@@ -125,6 +132,44 @@ public class DefaultTeam {
 		return candidate;
 	}
 
+	private ArrayList<Point> remove3add2(ArrayList<Point> candidate, ArrayList<Point> points, int edgeThreshold) {
+		ArrayList<Point> test = removeDuplicates(candidate);
+		long seed = System.nanoTime();
+		Collections.shuffle(test, new Random(seed));//test = 把原来的solution去重，打乱
+		ArrayList<Point> rest = removeDuplicates(points);//所有的点去重
+		rest.removeAll(test); //rest = 去掉solution的点
+
+		for (int i = 0; i < test.size(); i++) {
+			for (int j = i + 1; j < test.size(); j++) {				
+				for (int m = j + 1; m < test.size(); m++) {
+					if(m==test.size())break;
+					Point z = test.remove(m);
+				Point q = test.remove(j);
+				Point p = test.remove(i);
+
+				 //去掉两个点试试看
+				for (int r=0;r < rest.size(); r++) {		
+					for (int k=r+1;k < rest.size(); k++) {
+					if(rest.get(r).distance(q)<= 5.7*edgeThreshold && rest.get(r).distance(p)<= 5.7*edgeThreshold && rest.get(r).distance(z)<= 5.7*edgeThreshold && rest.get(k).distance(q)<= 5.7*edgeThreshold && rest.get(k).distance(p)<= 5.7*edgeThreshold && rest.get(k).distance(z)<= 5.7*edgeThreshold) {
+						test.add(rest.get(r));
+						test.add(rest.get(k));
+						if (isSolution(test, points, edgeThreshold))
+							return test;
+						test.remove(rest.get(r));
+						test.remove(rest.get(k));
+					}
+					}
+				}
+				test.add(i, p);
+				test.add(j, q);
+				test.add(j, z);
+			}
+		}
+		}
+		return candidate;
+	}
+
+	
 	private boolean isSolution(ArrayList<Point> candidateIn, ArrayList<Point> pointsIn, int edgeThreshold) {
 		ArrayList<Point> candidate = removeDuplicates(candidateIn);
 		ArrayList<Point> rest = removeDuplicates(pointsIn);
