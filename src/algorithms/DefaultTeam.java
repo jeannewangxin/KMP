@@ -40,7 +40,7 @@ public class DefaultTeam {
 
 		ArrayList<Point> result = (ArrayList<Point>) points.clone();
 
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 20; i++) {
 			ArrayList<Point> fvs = localSearch(greedy(points, edgeThreshold), points, edgeThreshold);
 
 			System.out.println("MAIN. Current sol: " + result.size() + ". Found next sol: " + fvs.size());
@@ -57,7 +57,7 @@ public class DefaultTeam {
 		ArrayList<Point> points = (ArrayList<Point>) pointsIn.clone();
 		ArrayList<Point> result = (ArrayList<Point>) pointsIn.clone();
 
-		for (int i = 0; i < 3; i++) {
+//		for (int i = 0; i < 3; i++) {
 			Collections.shuffle(points, new Random(System.nanoTime()));
 			ArrayList<Point> rest = removeDuplicates(points);
 			ArrayList<Point> fvs = new ArrayList<Point>();
@@ -74,7 +74,7 @@ public class DefaultTeam {
 			if (fvs.size() < result.size())
 				result = fvs;
 
-		}
+//		}
 
 		return result;
 	}
